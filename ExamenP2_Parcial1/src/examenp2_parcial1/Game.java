@@ -20,7 +20,7 @@ public class Game extends RentItem implements MenuActions {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String fechaTexto = sdf.format(fechaPublicacion.getTime());
         
-        return super.toString() + "Fecha de publicacion: " + fechaTexto;
+        return super.toString() + "Fecha de publicacion: " + fechaTexto+ " - PS3 GAME";
     }
 
     @Override
@@ -45,5 +45,9 @@ public class Game extends RentItem implements MenuActions {
     public void ejecutarOpcion(int opcion) {
 
     }
+   public void submenu(){
+   
+   }
 
+    
 }
