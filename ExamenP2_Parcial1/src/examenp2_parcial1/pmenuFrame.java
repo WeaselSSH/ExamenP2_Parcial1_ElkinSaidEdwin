@@ -18,7 +18,7 @@ public class pmenuFrame extends FrontEnd {
     private final JLabel titleLabel = new JLabel("JAVA TICKET");
     private final JButton btnLogin = new JButton("Login");
     private final JButton btnCerrar = new JButton("Cerrar");
-    private final String imagen = "/proyectocal/imagenes/prueba1.jpg";
+    private final String imagen = "/examenp2_parcial1/imagenes/mainBackground.jpg";
 
     public pmenuFrame() {
         FrameConFondo(this, cargarFondo(imagen));
