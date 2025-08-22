@@ -16,11 +16,27 @@ public class Game extends RentItem implements MenuActions {
     
     @Override
     public String toString() {
-        return super.toString() + "Fecha de publicación: " + fechaPublicacion;
+        return super.toString() + "Fecha de publicacion: " + fechaPublicacion;
     }
     
     @Override
     public double pagoRenta(int dias) {
-        
+     return dias*20;
     }
+   public void setfechaPublicacion(int year, int month,int day){
+   this.fechaPublicacion.set(year, month,day);
+   }
+    public String listEspecificaciones(int i){
+    if(especificacionesTecnicas.isEmpty()){
+    return "NO SE HAN AGREGADO ESPECIFICACIONES";
+    }
+    if(i>especificacionesTecnicas.size()){
+    return "";
+    }
+    return especificacionesTecnicas.get(i)+" \n "+listEspecificaciones(i+1);
+    }
+  public void ejecutarOpcion(int opcion){
+  
+  }
+
 }

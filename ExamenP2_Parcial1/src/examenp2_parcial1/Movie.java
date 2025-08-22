@@ -64,11 +64,11 @@ public class Movie extends RentItem {
         }
     }
 
-    // ---- Cálculo del pago de renta ----
+    
     public double pagoRenta(int dias) {
         if (dias <= 0) return 0.0;
 
-        double base = precioRenta * dias; // cálculo base
+        double base = precioRenta * dias;
         double recargo = 0.0;
 
         if (getEstado().equals(ESTADO_ESTRENO)) {
