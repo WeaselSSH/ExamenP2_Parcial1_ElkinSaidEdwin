@@ -4,14 +4,18 @@ import javax.swing.ImageIcon;
 
 public abstract class RentItem {
 
-    int codigoItem;
-    String nombreItem;
-    double precioRenta;
-    int cantidadCopias;
-    ImageIcon item;
+    protected int codigoItem;
+    protected String nombreItem;
+    protected double precioRenta;
+    protected int cantidadCopias;
+    protected ImageIcon item;
     
-    public RentItem(int codigoItem, String nombreItem, double precioRenta) {
+    public RentItem(int codigoItem, String nombreItem, double precioRenta, String path) {
+        this.codigoItem = codigoItem;
+        this.nombreItem = nombreItem;
+        this.precioRenta = precioRenta;
         this.cantidadCopias = 0;
+        this.item = new ImageIcon(path);
     }
     
     @Override

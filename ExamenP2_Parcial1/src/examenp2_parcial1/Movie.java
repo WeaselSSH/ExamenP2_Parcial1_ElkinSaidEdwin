@@ -1,7 +1,6 @@
 package examenp2_parcial1;
 
 import java.util.Calendar;
-import javax.swing.ImageIcon;
 
 public class Movie extends RentItem {
 
@@ -10,14 +9,12 @@ public class Movie extends RentItem {
     public static final String ESTADO_NORMAL  = "NORMAL";
 
     
-    private Calendar fechaEstreno; 
-    private String imagenPath; 
+    private Calendar fechaEstreno;  
 
     
     public Movie(int codigoItem, String nombreItem, double precioRenta, String imagenPath) {
-        super(codigoItem, nombreItem, precioRenta);
+        super(codigoItem, nombreItem, precioRenta, imagenPath);
         this.fechaEstreno = Calendar.getInstance();
-        this.imagenPath = imagenPath;
     }
 
   
@@ -35,21 +32,6 @@ public class Movie extends RentItem {
             this.fechaEstreno.setTime(fechaEstreno.getTime());
         }
     }
-
-    
-    public String getImagenPath() {
-        return imagenPath;
-    }
-
-    public void setImagenPath(String imagenPath) {
-        this.imagenPath = imagenPath;
-    }
-
-    public ImageIcon getImagenIcon() {
-        if (imagenPath == null || imagenPath.isEmpty()) return null;
-        return new ImageIcon(imagenPath);
-    }
-
    
     public String getEstado() {
         Calendar hoy = Calendar.getInstance();
