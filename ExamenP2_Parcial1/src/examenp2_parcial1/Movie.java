@@ -34,17 +34,22 @@ public class Movie extends RentItem {
     }
    
     public String getEstado() {
-        Calendar hoy = Calendar.getInstance();
-        Calendar limiteEstreno = Calendar.getInstance();
-        limiteEstreno.setTime(this.fechaEstreno.getTime());
-        limiteEstreno.add(Calendar.MONTH, 3); 
+    Calendar hoy = Calendar.getInstance();
 
-        if (hoy.compareTo(limiteEstreno) <= 0) {
-            return ESTADO_ESTRENO;
-        } else {
-            return ESTADO_NORMAL;
-        }
+    if (hoy.before(this.fechaEstreno)) {
+        return ESTADO_NORMAL;
     }
+
+    Calendar limiteEstreno = Calendar.getInstance();
+    limiteEstreno.setTime(this.fechaEstreno.getTime());
+    limiteEstreno.add(Calendar.MONTH, 3);
+
+    if (hoy.compareTo(limiteEstreno) <= 0) {
+        return ESTADO_ESTRENO;
+    } else {
+        return ESTADO_NORMAL;
+    }
+}
 
     
     public double pagoRenta(int dias) {
