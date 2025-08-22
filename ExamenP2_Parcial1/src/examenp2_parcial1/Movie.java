@@ -12,9 +12,9 @@ public class Movie extends RentItem {
     private Calendar fechaEstreno;  
 
     
-    public Movie(int codigoItem, String nombreItem, double precioRenta, String imagenPath) {
+    public Movie(int codigoItem, String nombreItem, double precioRenta, String imagenPath, Calendar fechaEstreno) {
         super(codigoItem, nombreItem, precioRenta, imagenPath);
-        this.fechaEstreno = Calendar.getInstance();
+        this.fechaEstreno = fechaEstreno;
     }
 
   
