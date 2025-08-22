@@ -7,7 +7,19 @@ public abstract class RentItem {
     int codigoItem;
     String nombreItem;
     double precioRenta;
+    int cantidadCopias;
     ImageIcon item;
-    int cantidadCopias  = 0;
+    
+    public RentItem(int codigoItem, String nombreItem, double precioRenta) {
+        this.cantidadCopias = 0;
+    }
+    
+    @Override
+    public String toString() {
+        return "Código item: " + codigoItem
+                + "\n Nombre item: " + nombreItem
+                + "\n Precio renta: " + precioRenta
+                + "\n Cantidad copias: " + cantidadCopias;
+    }
 }
 
