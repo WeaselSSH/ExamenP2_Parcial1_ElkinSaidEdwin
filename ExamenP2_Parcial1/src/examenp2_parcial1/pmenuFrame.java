@@ -13,7 +13,7 @@ public class pmenuFrame extends FrontEnd {
     private final JButton btnAnadir = new JButton("Añadir");
     private final JButton btnRentar = new JButton("Rentar");
     private final JButton btnCerrar = new JButton("Cerrar");
-    private final String imagenFondo = "examenp2_parcial1/mainBackground.jpg";
+    private final String imagenFondo = "examenp2_parcial1/imagenes/main.jpeg";
 
     public pmenuFrame() {
         FrameConFondo(this, cargarFondo(imagenFondo));
