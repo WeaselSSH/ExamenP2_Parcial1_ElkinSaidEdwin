@@ -20,7 +20,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -179,4 +178,18 @@ public class FrontEnd extends JFrame {
         gbcFrame.gridy = 1;
         getContentPane().add(panelContenedor, gbcFrame);
     }
+    
+public void disBotonInline(JButton btn) {
+    btn.setFont(new Font("Segoe UI Semibold", Font.BOLD, 18));
+    btn.setPreferredSize(new Dimension(220, 40)); 
+    btn.setForeground(TEXTO_BLANCO);
+    btn.setBackground(DETALLE_AZUL);
+    btn.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12)); 
+    btn.setFocusPainted(false);
+    btn.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override public void mouseEntered(java.awt.event.MouseEvent e) { btn.setBackground(DETALLE_AZUL.brighter()); }
+        @Override public void mouseExited (java.awt.event.MouseEvent e) { btn.setBackground(DETALLE_AZUL); }
+    });
+}
+
 }
