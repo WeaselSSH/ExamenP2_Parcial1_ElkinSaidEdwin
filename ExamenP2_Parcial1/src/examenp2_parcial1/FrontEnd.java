@@ -37,19 +37,6 @@ public class FrontEnd extends JFrame {
 
         frame.setContentPane(bgPanel);
         frame.getContentPane().setLayout(new GridBagLayout());
-
-        if (Usuarios.usuarioLogeado != null) {
-            JLabel userLabel = new JLabel("Usuario: " + Usuarios.usuarioLogeado.getUser());
-            userLabel.setFont(new Font("Georgia", Font.ITALIC, 16));
-            userLabel.setForeground(new Color(150, 150, 160));
-            
-            GridBagConstraints gbcUser = new GridBagConstraints();
-            gbcUser.gridx = 1;
-            gbcUser.gridy = 0;
-            gbcUser.anchor = GridBagConstraints.NORTHEAST;
-            gbcUser.insets = new Insets(10, 10, 10, 10);
-            frame.getContentPane().add(userLabel, gbcUser);
-        }
     }
 
     public Image cargarFondo(String imagen) {
