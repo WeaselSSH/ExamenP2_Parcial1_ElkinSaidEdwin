@@ -9,11 +9,14 @@ import javax.imageio.ImageIO;
 
 public class FrontEnd extends JFrame {
 
+    // --- (Constantes de color y fuentes sin cambios) ---
     private static final Color BACKGROUND_COMPONENTS = new Color(45, 45, 58);
     private static final Color BUTTON_HOVER_BACKGROUND = new Color(30, 32, 42); 
     private static final Color TEXT_COLOR = new Color(236, 236, 234); 
     private static final Color BORDER_COLOR = new Color(68, 85, 132);
-    private static final Color BORDER_HOVER_COLOR = new Color(40, 50, 70); 
+    private static final Color BORDER_HOVER_COLOR = new Color(40, 50, 70);
+    private static final Font FONT_LABEL = new Font("Georgia", Font.BOLD, 22);
+    private static final Font FONT_FIELD = new Font("Georgia", Font.PLAIN, 20);
 
     public FrontEnd() {}
 
@@ -40,20 +43,19 @@ public class FrontEnd extends JFrame {
     }
 
     public Image cargarFondo(String imagen) {
-    try {
-        java.net.URL imageUrl = getClass().getClassLoader().getResource(imagen);
-
-        if (imageUrl == null) {
-            JOptionPane.showMessageDialog(null, "No se pudo encontrar la imagen de fondo en la ruta del classpath:\n" + imagen, "Error de Recurso", JOptionPane.ERROR_MESSAGE);
+        try {
+            java.net.URL imageUrl = getClass().getClassLoader().getResource(imagen);
+            if (imageUrl == null) {
+                JOptionPane.showMessageDialog(null, "No se pudo encontrar la imagen de fondo en la ruta del classpath:\n" + imagen, "Error de Recurso", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            return ImageIO.read(imageUrl);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error al cargar la imagen de fondo.", "Error de Carga", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
             return null;
         }
-        return ImageIO.read(imageUrl);
-    } catch (IOException ex) {
-        JOptionPane.showMessageDialog(null, "Ocurrió un error al cargar la imagen de fondo.", "Error de Carga", JOptionPane.ERROR_MESSAGE);
-        ex.printStackTrace();
-        return null;
     }
-}
 
     public void titulo1(JLabel titleLabel) {
         titleLabel.setFont(new Font("Georgia", Font.BOLD, 85)); 
@@ -72,7 +74,7 @@ public class FrontEnd extends JFrame {
         gbc.anchor = GridBagConstraints.NORTH;
         getContentPane().add(titleLabel, gbc);
     }
-
+    
     public void disBoton(JButton[] btn) {
         Font buttonFont = new Font("Georgia", Font.BOLD, 28); 
         Dimension buttonSize = new Dimension(500, 80);
@@ -102,6 +104,7 @@ public class FrontEnd extends JFrame {
         }
     }
 
+    // --- (Método layoutBtn sin cambios) ---
     public void layoutBtn(JButton[] btn) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -125,5 +128,31 @@ public class FrontEnd extends JFrame {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         getContentPane().add(panel, gbc);
+    }
+
+
+    public void crearCampoFormulario(JPanel panel, GridBagConstraints gbc, String labelText, JComponent component) {
+        JLabel label = new JLabel(labelText);
+        label.setFont(FONT_LABEL);
+        label.setForeground(TEXT_COLOR);
+
+        component.setFont(FONT_FIELD);
+        if (component instanceof JTextField) {
+            JTextField textField = (JTextField) component;
+            textField.setPreferredSize(new Dimension(300, 40));
+            textField.setForeground(TEXT_COLOR);
+            textField.setBackground(BACKGROUND_COMPONENTS);
+            textField.setBorder(BorderFactory.createLineBorder(BORDER_COLOR, 2));
+        }
+
+        gbc.gridx = 0;
+        gbc.anchor = GridBagConstraints.EAST;
+        panel.add(label, gbc);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel.add(component, gbc);
+
+        gbc.gridy++; 
     }
 }

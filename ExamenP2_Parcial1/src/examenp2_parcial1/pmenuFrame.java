@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package examenp2_parcial1;
 
 import javax.swing.JButton;
@@ -9,61 +5,57 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author saidn
- */
 public class pmenuFrame extends FrontEnd {
      public static PantallaDeCarga pantallaDeCargaInstancia;
+     
+    private final SistemaWonderland sistemaWonderland = new SistemaWonderland();
 
-    private final JLabel titleLabel = new JLabel("Wonderland");
-    private final JButton btnAdd = new JButton("Añadir");
-     private final JButton btnRentar = new JButton("Rentar");
+    private final JLabel etiquetaTitulo = new JLabel("Wonderland");
+    private final JButton btnAnadir = new JButton("Añadir");
+    private final JButton btnRentar = new JButton("Rentar");
     private final JButton btnCerrar = new JButton("Cerrar");
-    private final String imagen = "examenp2_parcial1/mainBackground.jpg";
+    private final String imagenFondo = "examenp2_parcial1/mainBackground.jpg";
 
     public pmenuFrame() {
-        FrameConFondo(this, cargarFondo(imagen));
-        titulo1(titleLabel);
-        JButton[] botones = {btnRentar, btnAdd,btnCerrar};
+        FrameConFondo(this, cargarFondo(imagenFondo));
+        titulo1(etiquetaTitulo);
+        JButton[] botones = {btnRentar, btnAnadir, btnCerrar};
         layoutBtn(botones);
         acciones();
         transicionSuave.fadeIn(this);
     }
 
     public void acciones() {
-    btnCerrar.addActionListener(e -> System.exit(0));
+        btnCerrar.addActionListener(e -> System.exit(0));
 
-    btnAdd.addActionListener(e -> {
-        String[] options = {"Pelicula", "Juego"};
+        btnAnadir.addActionListener(e -> {
+            String[] opciones = {"Película", "Juego"};
+            int eleccion = JOptionPane.showOptionDialog(
+                    this, 
+                    "¿Qué tipo de ítem deseas añadir?", 
+                    "Seleccionar Tipo de Ítem", 
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,     
+                    opciones,   
+                    opciones[0]
+            );
 
-        int choice = JOptionPane.showOptionDialog(
-                this, 
-                "¿Qué tipo de item deseas añadir?", 
-                "Seleccionar Tipo de Item", 
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,     
-                options,   
-                options[0]
-        );
-        if (choice == 0) {
-            System.out.println("Usuario quiere añadir una Película.");
-            
-        } else if (choice == 1) {
-            System.out.println("Usuario quiere añadir un Juego.");
-        }
-    });
+            if (eleccion == 0) {
+                transicionSuave.fadeOut(this, () -> new addMovieF(sistemaWonderland));
+            } else if (eleccion == 1) {
+                transicionSuave.fadeOut(this, () -> new addGameF(sistemaWonderland));
+            }
+        });
 
-    btnRentar.addActionListener(e -> System.exit(0));
-}
+        btnRentar.addActionListener(e -> {
+        });
+    }
 
     public static void main(String[] args) {
-
         SwingUtilities.invokeLater(() -> {
             pantallaDeCargaInstancia = new PantallaDeCarga();
             pantallaDeCargaInstancia.setVisible(true);
-
             new pmenuFrame();
         });
     }
