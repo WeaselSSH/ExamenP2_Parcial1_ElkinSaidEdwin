@@ -13,4 +13,14 @@ public class Game extends RentItem implements MenuActions {
         this.fechaPublicacion = Calendar.getInstance();
         this.especificacionesTecnicas = new ArrayList<>();
     }
+    
+    @Override
+    public String toString() {
+        return super.toString() + "Fecha de publicación: " + fechaPublicacion;
+    }
+    
+    @Override
+    public double pagoRenta(int dias) {
+        
+    }
 }
