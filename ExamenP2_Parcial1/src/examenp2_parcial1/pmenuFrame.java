@@ -19,12 +19,12 @@ public class pmenuFrame extends FrontEnd {
     private final JButton btnAdd = new JButton("Añadir");
      private final JButton btnRentar = new JButton("Rentar");
     private final JButton btnCerrar = new JButton("Cerrar");
-    private final String imagen = "/examenp2_parcial1/imagenes/mainBackground.jpg";
+    private final String imagen = "/examenp2_parcial1/mainBackground.jpg";
 
     public pmenuFrame() {
         FrameConFondo(this, cargarFondo(imagen));
         titulo1(titleLabel);
-        JButton[] botones = {btnAdd, btnCerrar,btnRentar};
+        JButton[] botones = {btnRentar, btnAdd,btnCerrar};
         layoutBtn(botones);
         acciones();
         transicionSuave.fadeIn(this);
