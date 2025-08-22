@@ -18,9 +18,9 @@ public class SistemaWonderland {
     public void agregarItem(RentItem item) {
         if (!codigoExiste(item.getCodigoItem())) {
             items.add(item);
-            JOptionPane.showMessageDialog(null, "¡Ítem agregado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Item agregado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null, "El código " + item.getCodigoItem() + " ya existe.", "Error de Duplicado", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El codigo " + item.getCodigoItem() + " ya existe.", "Error de Duplicado", JOptionPane.ERROR_MESSAGE);
         }
     }
 

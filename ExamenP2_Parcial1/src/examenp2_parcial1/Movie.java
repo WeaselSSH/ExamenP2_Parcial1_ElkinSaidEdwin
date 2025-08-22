@@ -3,21 +3,17 @@ package examenp2_parcial1;
 import java.util.Calendar;
 
 public class Movie extends RentItem {
-
     
     public static final String ESTADO_ESTRENO = "ESTRENO";
     public static final String ESTADO_NORMAL  = "NORMAL";
-
     
     private Calendar fechaEstreno;  
 
-    
     public Movie(int codigoItem, String nombreItem, double precioRenta, String imagenPath, Calendar fechaEstreno) {
         super(codigoItem, nombreItem, precioRenta, imagenPath);
         this.fechaEstreno = fechaEstreno;
     }
 
-  
     public Calendar getFechaEstreno() {
         Calendar copia = Calendar.getInstance();
         copia.setTime(this.fechaEstreno.getTime());
@@ -34,23 +30,22 @@ public class Movie extends RentItem {
     }
    
     public String getEstado() {
-    Calendar hoy = Calendar.getInstance();
+        Calendar hoy = Calendar.getInstance();
 
-    if (hoy.before(this.fechaEstreno)) {
-        return ESTADO_NORMAL;
+        if (hoy.before(this.fechaEstreno)) {
+            return ESTADO_NORMAL;
+        }
+
+        Calendar limiteEstreno = Calendar.getInstance();
+        limiteEstreno.setTime(this.fechaEstreno.getTime());
+        limiteEstreno.add(Calendar.MONTH, 3); 
+
+        if (hoy.compareTo(limiteEstreno) <= 0) {
+            return ESTADO_ESTRENO;
+        } else {
+            return ESTADO_NORMAL;
+        }
     }
-
-    Calendar limiteEstreno = Calendar.getInstance();
-    limiteEstreno.setTime(this.fechaEstreno.getTime());
-    limiteEstreno.add(Calendar.MONTH, 3);
-
-    if (hoy.compareTo(limiteEstreno) <= 0) {
-        return ESTADO_ESTRENO;
-    } else {
-        return ESTADO_NORMAL;
-    }
-}
-
     
     public double pagoRenta(int dias) {
         if (dias <= 0) return 0.0;
@@ -67,10 +62,8 @@ public class Movie extends RentItem {
                 recargo = (dias - 5) * 30;
             }
         }
-
         return base + recargo;
     }
-
     
     @Override
     public String toString() {

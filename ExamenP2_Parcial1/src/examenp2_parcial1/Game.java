@@ -37,7 +37,7 @@ public class Game extends RentItem implements MenuActions {
 
     public String listEspecificaciones(int i) {
         if (especificacionesTecnicas.isEmpty()) {
-            return "No hay especificaciones técnicas agregadas.";
+            return "No hay especificaciones tecnicas agregadas.";
         }
         if (i >= especificacionesTecnicas.size()) {
             return "";
@@ -47,8 +47,8 @@ public class Game extends RentItem implements MenuActions {
 
     @Override
     public void submenu() {
-        String[] opciones = {"Actualizar Fecha de Publicación", "Agregar Especificación", "Ver Especificaciones", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(null, "Submenú para: " + getNombreItem(), "Submenú de Juego", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+        String[] opciones = {"Actualizar Fecha de Publicacion", "Agregar Especificacion", "Ver Especificaciones", "Cancelar"};
+        int eleccion = JOptionPane.showOptionDialog(null, "Submenu para: " + getNombreItem(), "Submenu de Juego", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
         if(eleccion != 3) {
             ejecutarOpcion(eleccion);
         }
@@ -62,18 +62,18 @@ public class Game extends RentItem implements MenuActions {
                 dateChooser.setDate(new Date());
                 JPanel panelFecha = new JPanel();
                 panelFecha.add(dateChooser);
-                int result = JOptionPane.showConfirmDialog(null, panelFecha, "Seleccione la nueva fecha de publicación", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                int result = JOptionPane.showConfirmDialog(null, panelFecha, "Seleccione la nueva fecha de publicacion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
                     Calendar nuevaFecha = dateChooser.getCalendar();
                     setfechaPublicacion(nuevaFecha.get(Calendar.YEAR), nuevaFecha.get(Calendar.MONTH) + 1, nuevaFecha.get(Calendar.DAY_OF_MONTH));
-                    JOptionPane.showMessageDialog(null, "Fecha actualizada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Fecha actualizada correctamente.", "Exito", JOptionPane.INFORMATION_MESSAGE);
                 }
                 break;
             case 1:
-                String spec = JOptionPane.showInputDialog("Ingrese la nueva especificación técnica:");
+                String spec = JOptionPane.showInputDialog("Ingrese la nueva especificacion tecnica:");
                 if (spec != null && !spec.trim().isEmpty()) {
                     especificacionesTecnicas.add(spec);
-                    JOptionPane.showMessageDialog(null, "Especificación agregada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Especificacion agregada.", "Exito", JOptionPane.INFORMATION_MESSAGE);
                 }
                 break;
             case 2:

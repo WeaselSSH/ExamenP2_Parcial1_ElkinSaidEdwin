@@ -7,22 +7,23 @@ import javax.swing.SwingUtilities;
 
 public class pmenuFrame extends FrontEnd {
     public static PantallaDeCarga pantallaDeCargaInstancia;
-    private final SistemaWonderland sistemaWonderland = new SistemaWonderland();
+    private static final SistemaWonderland sistemaWonderland = new SistemaWonderland();
 
     private final JLabel etiquetaTitulo = new JLabel("Wonderland");
-    private final JButton btnAnadir = new JButton("Añadir Ítem");
-    private final JButton btnRentar = new JButton("Rentar");
-    private final JButton btnReportes = new JButton("Reportes");
-    private final JButton btnCerrar = new JButton("Cerrar");
-    private final String imagenFondo = "examenp2_parcial1/imagenes/main.jpeg";
+    private final JButton btnAnadir    = new JButton("Añadir ítem");
+    private final JButton btnRentar    = new JButton("Rentar");
+    private final JButton btnReportes  = new JButton("Mostrar todo");
+    private final JButton btnSubmenu   = new JButton("Ejecutar Submenu"); 
+    private final JButton btnCerrar    = new JButton("Cerrar");
+    private final String imagenFondo   = "examenp2_parcial1/imagenes/main.jpeg";
 
     public pmenuFrame() {
-        PantallaDeCarga pantalla  = new PantallaDeCarga();
-        pantalla.setVisible(true);
         FrameConFondo(this, cargarFondo(imagenFondo));
         titulo1(etiquetaTitulo);
-        JButton[] botones = {btnAnadir, btnRentar, btnReportes, btnCerrar};
+
+        JButton[] botones = { btnAnadir, btnRentar, btnSubmenu, btnReportes, btnCerrar };
         layoutBtn(botones);
+
         acciones();
         transicionSuave.fadeIn(this);
     }
@@ -31,9 +32,17 @@ public class pmenuFrame extends FrontEnd {
         btnCerrar.addActionListener(e -> System.exit(0));
 
         btnAnadir.addActionListener(e -> {
-            String[] opciones = {"Película", "Juego"};
-            int eleccion = JOptionPane.showOptionDialog(this, "¿Qué tipo de ítem deseas gestionar?", "Menú Añadir", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
-
+            String[] opciones = { "Pelicula", "Juego" };
+            int eleccion = JOptionPane.showOptionDialog(
+                    this,
+                    "Que deseas agregar?",
+                    "Anadir item",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[0]
+            );
             if (eleccion == 0) {
                 transicionSuave.fadeOut(this, () -> new addMovieF(sistemaWonderland));
             } else if (eleccion == 1) {
@@ -41,13 +50,46 @@ public class pmenuFrame extends FrontEnd {
             }
         });
 
-        btnRentar.addActionListener(e -> {
-            transicionSuave.fadeOut(this, () -> new rentarFrame(sistemaWonderland));
-        });
+        btnRentar.addActionListener(e ->
+            transicionSuave.fadeOut(this, () -> new rentarFrame(sistemaWonderland))
+        );
+
         
-        btnReportes.addActionListener(e -> {
-             transicionSuave.fadeOut(this, () -> new ReportesF(sistemaWonderland));
+        btnSubmenu.addActionListener(e -> {
+            try {
+                String sCodigo = JOptionPane.showInputDialog(
+                        this,
+                        "Codigo del juego para ejecutar el submenu:"
+                );
+                if (sCodigo == null) return;
+                int codigo = Integer.parseInt(sCodigo.trim());
+
+                RentItem item = sistemaWonderland.buscarItem(codigo);
+                if (item == null) {
+                    JOptionPane.showMessageDialog(this, "No existe un item con codigo " + codigo,
+                            "No encontrado", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                if (!(item instanceof Game)) {
+                    JOptionPane.showMessageDialog(this, "El codigo " + codigo + " no corresponde a un Juego",
+                            "Tipo incorrecto", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                ((Game) item).submenu();
+
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(this, "Formato de codigo invalido.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error al ejecutar el submenu: " + ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
+
+        btnReportes.addActionListener(e ->
+            transicionSuave.fadeOut(this, () -> new ReportesF(sistemaWonderland))
+        );
     }
 
     public static void main(String[] args) {

@@ -9,23 +9,23 @@ public abstract class RentItem {
     protected double precioRenta;
     protected int cantidadCopias;
     protected ImageIcon item;
-    
+
     public RentItem(int codigoItem, String nombreItem, double precioRenta, String path) {
         this.codigoItem = codigoItem;
         this.nombreItem = nombreItem;
         this.precioRenta = precioRenta;
-        this.cantidadCopias = 0;
+        this.cantidadCopias = 0; 
         this.item = new ImageIcon(path);
     }
-    
+
     @Override
     public String toString() {
-        return "Código item: " + codigoItem
+        return "Codigo item: " + codigoItem
                 + "\n Nombre item: " + nombreItem
                 + "\n Precio renta: " + precioRenta
                 + "\n Cantidad copias: " + cantidadCopias;
     }
-    
+
     public abstract double pagoRenta(int dias);
 
     public int getCodigoItem() {
@@ -43,6 +43,10 @@ public abstract class RentItem {
     public int getCantidadCopias() {
         return cantidadCopias;
     }
-    
-}
 
+    public void setCantidadCopias(int cantidadCopias) {
+        if (cantidadCopias >= 0) {
+            this.cantidadCopias = cantidadCopias;
+        }
+    }
+}
