@@ -3,6 +3,7 @@ package examenp2_parcial1;
 import com.toedter.calendar.JDateChooser;
 import java.io.File;
 import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -21,23 +22,24 @@ public class addMovieF extends FrontEnd {
     private final JTextField campoPrecio = new JTextField();
     private final JDateChooser selectorFecha = new JDateChooser();
     private final JTextField campoRutaImagen = new JTextField();
-    private final JButton btnSeleccionarImagen = new JButton("Seleccionar...");
+    private final JButton btnSeleccionarImagen = new JButton("...");
     private final JButton btnGuardar = new JButton("Guardar");
     private final JButton btnVolver = new JButton("Volver");
 
     public addMovieF(SistemaWonderland sistema) {
         this.sistemaWonderland = sistema;
         
-        FrameConFondo(this, cargarFondo("examenp2_parcial1/mainBackground.jpg"));
+        FrameConFondo(this, cargarFondo("examenp2_parcial1/imagenes/main.jpeg"));
         titulo1(new JLabel("Añadir Nueva Película"));
         
+        selectorFecha.setDate(new Date());
+
         JPanel panelImagen = new JPanel();
-        panelImagen.setOpaque(false);
         campoRutaImagen.setEditable(false);
         panelImagen.add(campoRutaImagen);
         panelImagen.add(btnSeleccionarImagen);
         
-        String[] etiquetas = {"Código:", "Nombre:", "Precio de Renta:", "Fecha de Estreno:", "Ruta Imagen:"};
+        String[] etiquetas = {"Código:", "Nombre:", "Precio de Renta:", "Fecha de Estreno:", "Imagen:"};
         JComponent[] componentes = {campoCodigo, campoNombre, campoPrecio, selectorFecha, panelImagen};
         JButton[] botones = {btnGuardar, btnVolver};
         
@@ -73,17 +75,18 @@ public class addMovieF extends FrontEnd {
                     return;
                 }
                 
-                Movie nuevaPelicula = new Movie(codigo, nombre, precio, rutaImagen);
-                nuevaPelicula.setFechaEstreno(fecha);
-                
-                sistemaWonderland.agregarPelicula(nuevaPelicula);
-                
-                JOptionPane.showMessageDialog(this, "¡Película guardada con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                if (sistemaWonderland.codigoExiste(codigo)) {
+                    JOptionPane.showMessageDialog(this, "El código " + codigo + " ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                Movie nuevaPelicula = new Movie(codigo, nombre, precio, rutaImagen, fecha);
+                sistemaWonderland.agregarItem(nuevaPelicula);
                 
                 campoCodigo.setText("");
                 campoNombre.setText("");
                 campoPrecio.setText("");
-                selectorFecha.setCalendar(null);
+                selectorFecha.setDate(new Date());
                 campoRutaImagen.setText("");
 
             } catch (NumberFormatException ex) {

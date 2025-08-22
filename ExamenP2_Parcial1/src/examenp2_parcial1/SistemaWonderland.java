@@ -1,42 +1,39 @@
 package examenp2_parcial1;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class SistemaWonderland {
-    private static ArrayList<Movie> peliculas = new ArrayList<>();
-    private static ArrayList<Game> juegos = new ArrayList<>();
+    private static ArrayList<RentItem> items = new ArrayList<>();
 
-    public void agregarPelicula(Movie pelicula) {
-        peliculas.add(pelicula);
+    public boolean codigoExiste(int codigo) {
+        for (RentItem item : items) {
+            if (item.getCodigoItem() == codigo) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public ArrayList<Movie> getPeliculas() {
-        return peliculas;
+    public void agregarItem(RentItem item) {
+        if (!codigoExiste(item.getCodigoItem())) {
+            items.add(item);
+            JOptionPane.showMessageDialog(null, "¡Ítem agregado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "El código " + item.getCodigoItem() + " ya existe.", "Error de Duplicado", JOptionPane.ERROR_MESSAGE);
+        }
     }
-    
-    public Movie buscarPelicula(int codigo) {
-        for (Movie pelicula : peliculas) {
-            if (pelicula.getCodigoItem() == codigo) {
-                return pelicula;
+
+    public RentItem buscarItem(int codigo) {
+        for (RentItem item : items) {
+            if (item.getCodigoItem() == codigo) {
+                return item;
             }
         }
         return null;
     }
 
-    public void agregarJuego(Game juego) {
-        juegos.add(juego);
-    }
-
-    public ArrayList<Game> getJuegos() {
-        return juegos;
-    }
-
-    public Game buscarJuego(int codigo) {
-        for (Game juego : juegos) {
-            if (juego.getCodigoItem() == codigo) {
-                return juego;
-            }
-        }
-        return null;
+    public ArrayList<RentItem> getItems() {
+        return items;
     }
 }

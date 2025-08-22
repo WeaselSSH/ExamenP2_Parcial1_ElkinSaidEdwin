@@ -3,6 +3,7 @@ package examenp2_parcial1;
 import com.toedter.calendar.JDateChooser;
 import java.io.File;
 import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -15,28 +16,28 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class addGameF extends FrontEnd {
 
     private final SistemaWonderland sistemaWonderland;
-
     private final JTextField campoCodigo = new JTextField();
     private final JTextField campoNombre = new JTextField();
     private final JDateChooser selectorFecha = new JDateChooser();
     private final JTextField campoRutaImagen = new JTextField();
-    private final JButton btnSeleccionarImagen = new JButton("Seleccionar...");
+    private final JButton btnSeleccionarImagen = new JButton("...");
     private final JButton btnGuardar = new JButton("Guardar");
     private final JButton btnVolver = new JButton("Volver");
 
     public addGameF(SistemaWonderland sistema) {
         this.sistemaWonderland = sistema;
         
-        FrameConFondo(this, cargarFondo("examenp2_parcial1/mainBackground.jpg"));
+        FrameConFondo(this, cargarFondo("examenp2_parcial1/imagenes/main.jpeg"));
         titulo1(new JLabel("Añadir Nuevo Juego"));
         
+        selectorFecha.setDate(new Date());
+
         JPanel panelImagen = new JPanel();
-        panelImagen.setOpaque(false);
         campoRutaImagen.setEditable(false);
         panelImagen.add(campoRutaImagen);
         panelImagen.add(btnSeleccionarImagen);
 
-        String[] etiquetas = {"Código:", "Nombre:", "Fecha de Publicación:", "Ruta Imagen:"};
+        String[] etiquetas = {"Código:", "Nombre:", "Fecha de Publicación:", "Imagen:"};
         JComponent[] componentes = {campoCodigo, campoNombre, selectorFecha, panelImagen};
         JButton[] botones = {btnGuardar, btnVolver};
         
@@ -70,28 +71,24 @@ public class addGameF extends FrontEnd {
                     return;
                 }
 
+                if (sistemaWonderland.codigoExiste(codigo)) {
+                    JOptionPane.showMessageDialog(this, "El código " + codigo + " ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 Game nuevoJuego = new Game(codigo, nombre, rutaImagen);
                 nuevoJuego.setfechaPublicacion(fecha.get(Calendar.YEAR), fecha.get(Calendar.MONTH) + 1, fecha.get(Calendar.DAY_OF_MONTH));
                 
-                sistemaWonderland.agregarJuego(nuevoJuego);
+                sistemaWonderland.agregarItem(nuevoJuego);
                 
-                JOptionPane.showMessageDialog(this, "¡Juego guardado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                
-                int opcionSpecs = JOptionPane.showConfirmDialog(this, "¿Deseas añadir especificaciones técnicas ahora?", "Especificaciones Técnicas", JOptionPane.YES_NO_OPTION);
-                
+                int opcionSpecs = JOptionPane.showConfirmDialog(this, "¿Deseas gestionar las especificaciones de este juego ahora?", "Gestionar Especificaciones", JOptionPane.YES_NO_OPTION);
                 if (opcionSpecs == JOptionPane.YES_OPTION) {
-                    while (true) {
-                        String spec = JOptionPane.showInputDialog(this, "Añade una especificación (o cancela para terminar):");
-                        if (spec == null || spec.trim().isEmpty()) {
-                            break;
-                        }
-                        nuevoJuego.especificacionesTecnicas.add(spec);
-                    }
+                    nuevoJuego.submenu();
                 }
                 
                 campoCodigo.setText("");
                 campoNombre.setText("");
-                selectorFecha.setCalendar(null);
+                selectorFecha.setDate(new Date());
                 campoRutaImagen.setText("");
 
             } catch (NumberFormatException ex) {
