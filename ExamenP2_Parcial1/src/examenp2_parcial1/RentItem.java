@@ -21,5 +21,24 @@ public abstract class RentItem {
                 + "\n Precio renta: " + precioRenta
                 + "\n Cantidad copias: " + cantidadCopias;
     }
+    
+    public abstract double pagoRenta(int dias);
+
+    public int getCodigoItem() {
+        return codigoItem;
+    }
+
+    public String getNombreItem() {
+        return nombreItem;
+    }
+
+    public double getPrecioRenta() {
+        return precioRenta;
+    }
+
+    public int getCantidadCopias() {
+        return cantidadCopias;
+    }
+    
 }
 
