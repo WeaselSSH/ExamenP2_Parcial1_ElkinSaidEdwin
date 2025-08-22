@@ -8,6 +8,6 @@ package examenp2_parcial1;
  *
  * @author saidn
  */
-public class addFrame {
+public class addMovieF {
     
 }

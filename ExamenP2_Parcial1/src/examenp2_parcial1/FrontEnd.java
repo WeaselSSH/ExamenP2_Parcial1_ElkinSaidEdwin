@@ -40,19 +40,20 @@ public class FrontEnd extends JFrame {
     }
 
     public Image cargarFondo(String imagen) {
-        try {
-            java.net.URL imageUrl = getClass().getResource(imagen);
-            if (imageUrl == null) {
-                JOptionPane.showMessageDialog(null, "No se pudo encontrar la imagen de fondo en la ruta:\n" + imagen, "Error de Recurso", JOptionPane.ERROR_MESSAGE);
-                return null;
-            }
-            return ImageIO.read(imageUrl);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ocurrió un error al cargar la imagen de fondo.", "Error de Carga", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
+    try {
+        java.net.URL imageUrl = getClass().getClassLoader().getResource(imagen);
+
+        if (imageUrl == null) {
+            JOptionPane.showMessageDialog(null, "No se pudo encontrar la imagen de fondo en la ruta del classpath:\n" + imagen, "Error de Recurso", JOptionPane.ERROR_MESSAGE);
             return null;
         }
+        return ImageIO.read(imageUrl);
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(null, "Ocurrió un error al cargar la imagen de fondo.", "Error de Carga", JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
+        return null;
     }
+}
 
     public void titulo1(JLabel titleLabel) {
         titleLabel.setFont(new Font("Georgia", Font.BOLD, 85)); 

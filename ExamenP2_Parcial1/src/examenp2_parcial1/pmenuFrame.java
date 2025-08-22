@@ -6,6 +6,7 @@ package examenp2_parcial1;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -19,7 +20,7 @@ public class pmenuFrame extends FrontEnd {
     private final JButton btnAdd = new JButton("Añadir");
      private final JButton btnRentar = new JButton("Rentar");
     private final JButton btnCerrar = new JButton("Cerrar");
-    private final String imagen = "/examenp2_parcial1/mainBackground.jpg";
+    private final String imagen = "examenp2_parcial1/mainBackground.jpg";
 
     public pmenuFrame() {
         FrameConFondo(this, cargarFondo(imagen));
@@ -31,11 +32,31 @@ public class pmenuFrame extends FrontEnd {
     }
 
     public void acciones() {
-        btnCerrar.addActionListener(e -> System.exit(0));
- btnAdd.addActionListener(e -> System.exit(0));
-  btnRentar.addActionListener(e -> System.exit(0));
-        
-    }
+    btnCerrar.addActionListener(e -> System.exit(0));
+
+    btnAdd.addActionListener(e -> {
+        String[] options = {"Pelicula", "Juego"};
+
+        int choice = JOptionPane.showOptionDialog(
+                this, 
+                "¿Qué tipo de item deseas añadir?", 
+                "Seleccionar Tipo de Item", 
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,     
+                options,   
+                options[0]
+        );
+        if (choice == 0) {
+            System.out.println("Usuario quiere añadir una Película.");
+            
+        } else if (choice == 1) {
+            System.out.println("Usuario quiere añadir un Juego.");
+        }
+    });
+
+    btnRentar.addActionListener(e -> System.exit(0));
+}
 
     public static void main(String[] args) {
 
