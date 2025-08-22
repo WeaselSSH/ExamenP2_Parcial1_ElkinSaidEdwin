@@ -8,8 +8,6 @@ public class SistemaWonderland {
 
     public void agregarPelicula(Movie pelicula) {
         peliculas.add(pelicula);
-        System.out.println("Película agregada: " + pelicula.getNombreItem());
-        System.out.println("Total de películas: " + peliculas.size());
     }
 
     public ArrayList<Movie> getPeliculas() {
@@ -22,13 +20,11 @@ public class SistemaWonderland {
                 return pelicula;
             }
         }
-        return null; 
+        return null;
     }
 
     public void agregarJuego(Game juego) {
         juegos.add(juego);
-        System.out.println("Juego agregado: " + juego.getNombreItem());
-        System.out.println("Total de juegos: " + juegos.size());
     }
 
     public ArrayList<Game> getJuegos() {
@@ -41,6 +37,6 @@ public class SistemaWonderland {
                 return juego;
             }
         }
-        return null; 
+        return null;
     }
 }

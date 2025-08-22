@@ -1,15 +1,16 @@
 package examenp2_parcial1;
 
 import com.toedter.calendar.JDateChooser;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.io.File;
 import java.util.Calendar;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class addMovieF extends FrontEnd {
 
@@ -19,36 +20,29 @@ public class addMovieF extends FrontEnd {
     private final JTextField campoNombre = new JTextField();
     private final JTextField campoPrecio = new JTextField();
     private final JDateChooser selectorFecha = new JDateChooser();
+    private final JTextField campoRutaImagen = new JTextField();
+    private final JButton btnSeleccionarImagen = new JButton("Seleccionar...");
     private final JButton btnGuardar = new JButton("Guardar");
     private final JButton btnVolver = new JButton("Volver");
 
-    // CONSTRUCTOR CORREGIDO: Acepta el sistema como parámetro
     public addMovieF(SistemaWonderland sistema) {
-        this.sistemaWonderland = sistema; // Guardamos la referencia al sistema
+        this.sistemaWonderland = sistema;
         
         FrameConFondo(this, cargarFondo("examenp2_parcial1/mainBackground.jpg"));
         titulo1(new JLabel("Añadir Nueva Película"));
         
-        // El resto del código para construir la ventana...
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setOpaque(false);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.gridy = 0;
-
-        crearCampoFormulario(panel, gbc, "Código:", campoCodigo);
-        crearCampoFormulario(panel, gbc, "Nombre:", campoNombre);
-        crearCampoFormulario(panel, gbc, "Precio de Renta:", campoPrecio);
-        crearCampoFormulario(panel, gbc, "Fecha de Estreno:", selectorFecha);
-
-        JButton[] botones = {btnGuardar, btnVolver};
-        layoutBtn(botones);
+        JPanel panelImagen = new JPanel();
+        panelImagen.setOpaque(false);
+        campoRutaImagen.setEditable(false);
+        panelImagen.add(campoRutaImagen);
+        panelImagen.add(btnSeleccionarImagen);
         
-        GridBagConstraints frameGbc = new GridBagConstraints();
-        frameGbc.gridy = 1;
-        frameGbc.insets = new Insets(0, 0, 120, 0);
-        getContentPane().add(panel, frameGbc);
-
+        String[] etiquetas = {"Código:", "Nombre:", "Precio de Renta:", "Fecha de Estreno:", "Ruta Imagen:"};
+        JComponent[] componentes = {campoCodigo, campoNombre, campoPrecio, selectorFecha, panelImagen};
+        JButton[] botones = {btnGuardar, btnVolver};
+        
+        crearPanelFormularioCentrado(new JPanel(), etiquetas, componentes, botones);
+        
         acciones();
         transicionSuave.fadeIn(this);
     }
@@ -56,22 +50,32 @@ public class addMovieF extends FrontEnd {
     private void acciones() {
         btnVolver.addActionListener(e -> transicionSuave.fadeOut(this, pmenuFrame::new));
 
+        btnSeleccionarImagen.addActionListener(e -> {
+            JFileChooser selectorArchivo = new JFileChooser();
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Imágenes", "jpg", "png", "gif", "jpeg");
+            selectorArchivo.setFileFilter(filtro);
+            if (selectorArchivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                File archivo = selectorArchivo.getSelectedFile();
+                campoRutaImagen.setText(archivo.getAbsolutePath());
+            }
+        });
+
         btnGuardar.addActionListener(e -> {
             try {
                 int codigo = Integer.parseInt(campoCodigo.getText());
                 String nombre = campoNombre.getText();
                 double precio = Double.parseDouble(campoPrecio.getText());
                 Calendar fecha = selectorFecha.getCalendar();
+                String rutaImagen = campoRutaImagen.getText();
 
-                if (nombre.trim().isEmpty() || fecha == null) {
+                if (nombre.trim().isEmpty() || fecha == null || rutaImagen.trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Por favor, llene todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 
-                Movie nuevaPelicula = new Movie(codigo, nombre, precio, null);
+                Movie nuevaPelicula = new Movie(codigo, nombre, precio, rutaImagen);
                 nuevaPelicula.setFechaEstreno(fecha);
                 
-                // Usamos el método de SistemaWonderland para añadir la película
                 sistemaWonderland.agregarPelicula(nuevaPelicula);
                 
                 JOptionPane.showMessageDialog(this, "¡Película guardada con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -80,6 +84,7 @@ public class addMovieF extends FrontEnd {
                 campoNombre.setText("");
                 campoPrecio.setText("");
                 selectorFecha.setCalendar(null);
+                campoRutaImagen.setText("");
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Código y Precio deben ser números válidos.", "Error de Formato", JOptionPane.ERROR_MESSAGE);

@@ -1,15 +1,16 @@
 package examenp2_parcial1;
 
 import com.toedter.calendar.JDateChooser;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.io.File;
 import java.util.Calendar;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class addGameF extends FrontEnd {
 
@@ -17,35 +18,29 @@ public class addGameF extends FrontEnd {
 
     private final JTextField campoCodigo = new JTextField();
     private final JTextField campoNombre = new JTextField();
-    private final JTextField campoPrecio = new JTextField();
     private final JDateChooser selectorFecha = new JDateChooser();
+    private final JTextField campoRutaImagen = new JTextField();
+    private final JButton btnSeleccionarImagen = new JButton("Seleccionar...");
     private final JButton btnGuardar = new JButton("Guardar");
     private final JButton btnVolver = new JButton("Volver");
 
     public addGameF(SistemaWonderland sistema) {
-        this.sistemaWonderland = sistema; 
+        this.sistemaWonderland = sistema;
         
         FrameConFondo(this, cargarFondo("examenp2_parcial1/mainBackground.jpg"));
         titulo1(new JLabel("Añadir Nuevo Juego"));
         
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setOpaque(false);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.gridy = 0;
+        JPanel panelImagen = new JPanel();
+        panelImagen.setOpaque(false);
+        campoRutaImagen.setEditable(false);
+        panelImagen.add(campoRutaImagen);
+        panelImagen.add(btnSeleccionarImagen);
 
-        crearCampoFormulario(panel, gbc, "Código:", campoCodigo);
-        crearCampoFormulario(panel, gbc, "Nombre:", campoNombre);
-        crearCampoFormulario(panel, gbc, "Precio de Renta:", campoPrecio);
-        crearCampoFormulario(panel, gbc, "Fecha de Publicación:", selectorFecha);
-        
+        String[] etiquetas = {"Código:", "Nombre:", "Fecha de Publicación:", "Ruta Imagen:"};
+        JComponent[] componentes = {campoCodigo, campoNombre, selectorFecha, panelImagen};
         JButton[] botones = {btnGuardar, btnVolver};
-        layoutBtn(botones);
-
-        GridBagConstraints frameGbc = new GridBagConstraints();
-        frameGbc.gridy = 1;
-        frameGbc.insets = new Insets(0, 0, 120, 0);
-        getContentPane().add(panel, frameGbc);
+        
+        crearPanelFormularioCentrado(new JPanel(), etiquetas, componentes, botones);
 
         acciones();
         transicionSuave.fadeIn(this);
@@ -54,32 +49,53 @@ public class addGameF extends FrontEnd {
     private void acciones() {
         btnVolver.addActionListener(e -> transicionSuave.fadeOut(this, pmenuFrame::new));
 
+        btnSeleccionarImagen.addActionListener(e -> {
+            JFileChooser selectorArchivo = new JFileChooser();
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Imágenes", "jpg", "png", "gif", "jpeg");
+            selectorArchivo.setFileFilter(filtro);
+            if (selectorArchivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                campoRutaImagen.setText(selectorArchivo.getSelectedFile().getAbsolutePath());
+            }
+        });
+
         btnGuardar.addActionListener(e -> {
             try {
                 int codigo = Integer.parseInt(campoCodigo.getText());
                 String nombre = campoNombre.getText();
-                double precio = Double.parseDouble(campoPrecio.getText());
                 Calendar fecha = selectorFecha.getCalendar();
+                String rutaImagen = campoRutaImagen.getText();
 
-                if (nombre.trim().isEmpty() || fecha == null) {
+                if (nombre.trim().isEmpty() || fecha == null || rutaImagen.trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Por favor, llene todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                Game nuevoJuego = new Game(codigo, nombre, precio);
-                nuevoJuego.setfechaPublicacion(fecha.get(Calendar.YEAR), fecha.get(Calendar.MONTH), fecha.get(Calendar.DAY_OF_MONTH));
+                Game nuevoJuego = new Game(codigo, nombre, rutaImagen);
+                nuevoJuego.setfechaPublicacion(fecha.get(Calendar.YEAR), fecha.get(Calendar.MONTH) + 1, fecha.get(Calendar.DAY_OF_MONTH));
                 
                 sistemaWonderland.agregarJuego(nuevoJuego);
                 
                 JOptionPane.showMessageDialog(this, "¡Juego guardado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 
+                int opcionSpecs = JOptionPane.showConfirmDialog(this, "¿Deseas añadir especificaciones técnicas ahora?", "Especificaciones Técnicas", JOptionPane.YES_NO_OPTION);
+                
+                if (opcionSpecs == JOptionPane.YES_OPTION) {
+                    while (true) {
+                        String spec = JOptionPane.showInputDialog(this, "Añade una especificación (o cancela para terminar):");
+                        if (spec == null || spec.trim().isEmpty()) {
+                            break;
+                        }
+                        nuevoJuego.especificacionesTecnicas.add(spec);
+                    }
+                }
+                
                 campoCodigo.setText("");
                 campoNombre.setText("");
-                campoPrecio.setText("");
                 selectorFecha.setCalendar(null);
+                campoRutaImagen.setText("");
 
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Código y Precio deben ser números válidos.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "El código debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
