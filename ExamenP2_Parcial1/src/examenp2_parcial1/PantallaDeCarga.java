@@ -17,7 +17,7 @@ public class PantallaDeCarga extends FrontEnd
     public PantallaDeCarga() {
         FrameConFondo(this, null);
 
-        JLabel tituloFondo = new JLabel("JAVA TICKET");
+        JLabel tituloFondo = new JLabel("Wonderland");
         tituloFondo.setFont(new java.awt.Font("Georgia", java.awt.Font.BOLD, 80));
         tituloFondo.setForeground(new java.awt.Color(60, 63, 80));
         
