@@ -15,15 +15,16 @@ import javax.swing.SwingUtilities;
 public class pmenuFrame extends FrontEnd {
      public static PantallaDeCarga pantallaDeCargaInstancia;
 
-    private final JLabel titleLabel = new JLabel("JAVA TICKET");
-    private final JButton btnLogin = new JButton("Login");
+    private final JLabel titleLabel = new JLabel("Wonderland");
+    private final JButton btnAdd = new JButton("Añadir");
+     private final JButton btnRentar = new JButton("Rentar");
     private final JButton btnCerrar = new JButton("Cerrar");
     private final String imagen = "/examenp2_parcial1/imagenes/mainBackground.jpg";
 
     public pmenuFrame() {
         FrameConFondo(this, cargarFondo(imagen));
         titulo1(titleLabel);
-        JButton[] botones = {btnLogin, btnCerrar};
+        JButton[] botones = {btnAdd, btnCerrar,btnRentar};
         layoutBtn(botones);
         acciones();
         transicionSuave.fadeIn(this);
@@ -31,9 +32,9 @@ public class pmenuFrame extends FrontEnd {
 
     public void acciones() {
         btnCerrar.addActionListener(e -> System.exit(0));
-
-        btnLogin.addActionListener(e -> {
-        });
+ btnAdd.addActionListener(e -> System.exit(0));
+  btnRentar.addActionListener(e -> System.exit(0));
+        
     }
 
     public static void main(String[] args) {
